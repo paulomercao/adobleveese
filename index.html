@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cuestionario Data Warehouse</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
+    .question { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .correct { color: green; font-weight: bold; }
+    .incorrect { color: red; font-weight: bold; }
+    .option { cursor: pointer; padding: 5px; display: block; }
+    .option:hover { background: #eee; }
+  </style>
+</head>
+<body>
+  <h1>Cuestionario de Data AW</h1>
+  <div id="quiz"></div>
+  <script>
+  const questions = [
+  {
+    q: "¿Cuál es la definición correcta de 'computación en la nube'?",
+    options: [
+      "Un modelo de entrega de servicios de TI basado en hardware físico y software instalado localmente",
+      "Un modelo de entrega de servicios de TI basado en hardware físico, pero con software alojado en línea",
+      "Un modelo de entrega de servicios de TI basado en infraestructura virtualizada que se entrega a través de Internet",
+      "Un modelo de entrega de servicios de TI basado en hardware virtualizado y software instalado localmente"
+    ],
+    answer: 2
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para enviar mensajes y notificaciones en tiempo real a usuarios de aplicaciones móviles y web?",
+    options: ["SNS", "SQS", "RDS", "EC2"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS permite almacenar y procesar grandes volúmenes de datos para ejecutar análisis y obtener información valiosa?",
+    options: ["RDS", "S3", "VPC", "EMR"],
+    answer: 3
+  },
+  {
+    q: "Si necesitas crear una red privada virtual para conectar recursos de AWS en distintas regiones, ¿qué servicios deberías utilizar?",
+    options: [
+      "VPC y VPN",
+      "VPC y Direct Connect",
+      "VPN y CloudFront",
+      "VPC y S3"
+    ],
+    answer: 1
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para almacenar archivos de gran tamaño y acceder a ellos desde cualquier lugar y en cualquier momento?",
+    options: ["S3", "ECR", "SNS", "DYNAMO"],
+    answer: 0
+  },
+  {
+    q: "¿Qué es un grupo de seguridad en AWS?",
+    options: [
+      "Una colección de reglas de firewall que determinan qué tráfico de red se permite o deniega en una instancia de Amazon EC2",
+      "Un conjunto de permisos que especifica quién puede acceder a los recursos de AWS y qué acciones pueden realizar",
+      "Un grupo de instancias de Amazon EC2 que se lanzan y terminan juntas como una unidad lógica",
+      "Un conjunto de permisos que especifica quién puede acceder a la cuenta de AWS"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué es una 'zona de disponibilidad' en AWS?",
+    options: [
+      "Una ubicación física dentro de una región de AWS que contiene uno o más centros de datos aislados",
+      "Una ubicación física fuera de las regiones de AWS donde se almacenan los datos",
+      "Un conjunto de recursos de AWS que se agrupan y facturan como una sola unidad lógica",
+      "Un conjunto de permisos que especifica quién puede acceder a los recursos"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para crear una base de datos relacional escalable y disponible en la nube?",
+    options: ["S3", "RDS", "EC2", "EFS"],
+    answer: 1
+  },
+  {
+    q: "¿Qué es la nube?",
+    options: [
+      "Un servicio de correo electrónico",
+      "Una red de computadoras conectadas entre sí",
+      "Un modelo de entrega de servicios de computación, almacenamiento y networking",
+      "Una herramienta de desarrollo de software"
+    ],
+    answer: 2
+  },
+  {
+    q: "¿Qué opción describe mejor la elasticidad en la nube?",
+    options: [
+      "La capacidad de aumentar o disminuir la capacidad de cómputo en un servidor físico",
+      "La capacidad de replicar una base de datos en múltiples regiones",
+      "La capacidad de adaptarse a la demanda fluctuante de recursos informáticos",
+      "La capacidad de proteger los datos sensibles en la nube"
+    ],
+    answer: 2
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para alojar una aplicación de chat en tiempo real que requiere escalar horizontalmente?",
+    options: ["EC2", "S3", "Amazon ElastiCache", "Amazon SNS"],
+    answer: 2
+  },
+  {
+    q: "¿Cómo se cobra por los servicios de AWS?",
+    options: [
+      "Por hora de uso",
+      "Por minuto de uso",
+      "Por segundo de uso",
+      "Todas las anteriores"
+    ],
+    answer: 3
+  },
+  {
+    q: "Si necesitas ejecutar un sitio web con tráfico variable y escalable, ¿qué servicios de AWS utilizarías?",
+    options: ["EC2 y ELB", "EC2 y RDS", "EC2 y S3", "EC2 y SNS"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para almacenar y distribuir contenido web estático a nivel global con baja latencia?",
+    options: ["S3", "EC2", "RDS", "CloudFront"],
+    answer: 3
+  },
+  {
+    q: "¿Qué es AWS Direct Connect?",
+    options: [
+      "Un servicio que proporciona una conexión de red privada dedicada entre los centros de datos de AWS y los del cliente",
+      "Un servicio de almacenamiento duradero",
+      "Un servicio que permite ejecutar aplicaciones en la nube sin preocuparse por la infraestructura subyacente",
+      "Un método para distribuir contenido web de forma segura"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de las siguientes opciones describe mejor una región de AWS?",
+    options: [
+      "Un centro de datos aislado de otros centros de datos",
+      "Un conjunto de centros de datos conectados en una sola ubicación geográfica",
+      "Una colección de servicios AWS enfocados en un propósito específico",
+      "Un conjunto de servicios de AWS disponibles globalmente"
+    ],
+    answer: 1
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para ejecutar una aplicación web altamente escalable que recibe miles de solicitudes por segundo?",
+    options: ["S3", "EC2", "RDS", "CloudFront"],
+    answer: 1
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías si tu aplicación requiere acceso a una base de datos relacional escalable y administrada?",
+    options: ["S3", "EC2", "RDS", "CloudFront"],
+    answer: 2
+  },
+  {
+    q: "¿Qué es un modelo de precios de 'pagar por uso' en AWS?",
+    options: [
+      "Se paga por el tiempo que un recurso está en uso",
+      "Se paga por el tiempo que se tarda en configurar un recurso",
+      "Se paga por el tiempo que un recurso está disponible",
+      "Se paga por el tiempo que se tarda en descargar los datos"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es la diferencia entre nube pública y nube privada?",
+    options: [
+      "La nube pública es propiedad de una sola organización",
+      "La nube pública es accesible desde Internet, mientras que la privada solo desde una red privada",
+      "La nube pública se ejecuta en hardware físico dedicado",
+      "La nube privada se administra internamente"
+    ],
+    answer: 1
+  },
+  {
+    q: "¿Cuál de las siguientes opciones es una característica de las Zonas de Disponibilidad de AWS?",
+    options: [
+      "Cada zona de disponibilidad es una región independiente",
+      "Las zonas de disponibilidad se utilizan solo para almacenamiento de objetos",
+      "Las zonas de disponibilidad son instancias individuales de servidores físicos",
+      "Las zonas de disponibilidad están ubicadas en diferentes centros de datos dentro de una región"
+    ],
+    answer: 3
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para crear y administrar flujos de trabajo orquestados en la nube?",
+    options: ["AWS Step Functions", "EMR", "Kinesis", "DynamoDB"],
+    answer: 0
+  },
+  {
+    q: "¿Qué es AWS Lambda?",
+    options: [
+      "Un servicio que permite a los clientes ejecutar aplicaciones en la nube sin preocuparse por la infraestructura subyacente",
+      "Un servicio que permite distribuir contenido de manera rápida y segura",
+      "Un servicio de almacenamiento escalable y duradero",
+      "Una red privada dedicada entre centros de datos"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué es AWS CloudFront?",
+    options: [
+      "Un servicio de almacenamiento escalable y duradero",
+      "Un servicio para ejecutar aplicaciones sin preocuparse por la infraestructura subyacente",
+      "Un servicio para distribuir contenido web de manera rápida y segura a usuarios globalmente",
+      "Un servicio de red privada dedicada entre centros de datos"
+    ],
+    answer: 2
+  },
+  {
+    q: "¿Qué servicio de AWS utilizarías para automatizar la implementación y escalado de aplicaciones en contenedores?",
+    options: ["ECS", "EKS", "Lambda", "EC2"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de las siguientes opciones es una forma de reducir los costos en AWS?",
+    options: [
+      "Utilizar recursos on-demand en lugar de reservados",
+      "Utilizar instancias de cómputo de alta capacidad",
+      "Utilizar más almacenamiento de EBS del necesario",
+      "Todas las anteriores"
+    ],
+    answer: 3
+  },
+  {
+    q: "¿Qué servicio de AWS permite ejecutar consultas SQL directamente sobre datos almacenados en Amazon S3 sin necesidad de infraestructura?",
+    options: ["Athena", "Redshift", "RDS", "Glue"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es una ventaja clave de utilizar Amazon S3 como solución de almacenamiento?",
+    options: [
+      "Alto rendimiento para bases de datos relacionales",
+      "Acceso en tiempo real a contenidos desde cualquier ubicación",
+      "Despliegue automático de contenedores",
+      "Ejecución de código sin servidor"
+    ],
+    answer: 1
+  },
+  {
+    q: "¿Qué servicio de AWS permite crear clusters Hadoop o Spark administrados para procesar grandes volúmenes de datos?",
+    options: ["Amazon EMR", "Amazon Athena", "Amazon Redshift", "Amazon QuickSight"],
+    answer: 0
+  },
+  {
+    q: "¿Qué herramienta de AWS se utiliza para estimar el costo mensual de uso de servicios?",
+    options: ["AWS Pricing Calculator", "AWS Cost Explorer", "AWS Budgets", "Trusted Advisor"],
+    answer: 0
+  },
+  {
+    q: "¿Qué herramienta de AWS permite visualizar patrones de gasto a lo largo del tiempo?",
+    options: ["AWS Cost Explorer", "AWS Pricing Calculator", "AWS CloudTrail", "AWS IAM"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de los siguientes servicios de base de datos es gestionado por AWS y permite escalar automáticamente?",
+    options: ["Amazon RDS", "Amazon DynamoDB", "Amazon Redshift", "Amazon Aurora"],
+    answer: 1
+  },
+  {
+    q: "¿Qué servicio de AWS permite gestionar múltiples cuentas bajo una misma organización con control centralizado?",
+    options: ["AWS Organizations", "AWS IAM", "AWS Config", "AWS Trusted Advisor"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es una ventaja de usar AWS Organizations?",
+    options: [
+      "Permite la creación de buckets de S3 compartidos",
+      "Consolida la facturación de múltiples cuentas",
+      "Permite ejecutar scripts automatizados entre cuentas",
+      "Crea una red privada entre todas las cuentas"
+    ],
+    answer: 1
+  },
+  {
+    q: "¿Qué tipo de almacenamiento de AWS se utiliza comúnmente para el almacenamiento de objetos?",
+    options: ["Amazon S3", "Amazon EBS", "Amazon EFS", "Amazon Glacier"],
+    answer: 0
+  },
+  {
+    q: "¿Qué tipo de almacenamiento de AWS se usa principalmente para cargas de trabajo de análisis de datos a largo plazo y archivado?",
+    options: ["Amazon Glacier", "Amazon S3", "Amazon EBS", "Amazon EFS"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es un beneficio del uso de AWS CloudFormation?",
+    options: [
+      "Permite gestionar infraestructura como código",
+      "Proporciona balanceo de carga entre instancias",
+      "Reduce la latencia de aplicaciones globales",
+      "Almacena datos estructurados para análisis"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio permite crear balanceadores de carga para distribuir tráfico entre múltiples instancias EC2?",
+    options: ["Elastic Load Balancing", "Auto Scaling", "Amazon CloudWatch", "AWS Lambda"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio permite monitorear métricas y establecer alarmas en AWS?",
+    options: ["Amazon CloudWatch", "AWS CloudTrail", "AWS Config", "AWS Inspector"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es la ventaja principal de usar AWS Auto Scaling?",
+    options: [
+      "Reduce el tiempo de inactividad al ajustar automáticamente la capacidad de las instancias según la demanda",
+      "Mejora el rendimiento de red para bases de datos",
+      "Automatiza la facturación cruzada de cuentas",
+      "Permite ejecutar código sin servidor"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS permite auditar el uso de recursos y realizar seguimiento a las llamadas a la API dentro de una cuenta?",
+    options: ["AWS CloudTrail", "Amazon CloudWatch", "AWS Config", "AWS Inspector"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es el propósito principal de AWS Config?",
+    options: [
+      "Supervisar configuraciones de recursos y evaluarlas frente a reglas de cumplimiento",
+      "Gestionar la escalabilidad automática de instancias",
+      "Visualizar el tráfico de red entre regiones",
+      "Crear balanceadores de carga para distribuir tráfico"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS se utiliza para implementar reglas de acceso detalladas a recursos a nivel de usuario?",
+    options: ["AWS IAM", "AWS Organizations", "AWS Config", "AWS WAF"],
+    answer: 0
+  },
+  {
+    q: "¿Qué es una política en AWS IAM?",
+    options: [
+      "Un documento que define permisos para usuarios, grupos o roles",
+      "Un certificado de seguridad asociado a la red",
+      "Un servicio que define costos máximos mensuales",
+      "Una copia de seguridad de datos sensibles"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué tipo de identidad IAM se utiliza para que un servicio de AWS acceda a otros recursos de manera controlada?",
+    options: ["Rol", "Grupo", "Usuario", "Política"],
+    answer: 0
+  },
+  {
+    q: "¿Qué herramienta permite definir presupuestos y recibir alertas cuando el gasto supere un umbral en AWS?",
+    options: ["AWS Budgets", "Cost Explorer", "Billing Dashboard", "Pricing Calculator"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de las siguientes afirmaciones describe una ventaja clave del modelo sin servidor (serverless)?",
+    options: [
+      "No es necesario aprovisionar ni administrar servidores",
+      "El almacenamiento es ilimitado sin costo alguno",
+      "Las instancias pueden ser replicadas en múltiples regiones automáticamente",
+      "Permite ejecutar aplicaciones directamente sobre instancias EC2"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS proporciona una plataforma para el desarrollo y despliegue de aplicaciones sin gestionar la infraestructura?",
+    options: ["AWS Elastic Beanstalk", "Amazon EC2", "AWS CloudFormation", "Amazon VPC"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es una de las principales características de Amazon DynamoDB?",
+    options: [
+      "Base de datos NoSQL completamente gestionada y de alta disponibilidad",
+      "Sistema de archivos distribuidos escalable",
+      "Base de datos relacional con compatibilidad SQL completa",
+      "Servicio de orquestación de contenedores"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de los siguientes servicios es una solución de almacenamiento en bloque en AWS?",
+    options: ["Amazon EBS", "Amazon S3", "Amazon Glacier", "Amazon EFS"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio proporciona almacenamiento de archivos compartido para instancias EC2 basado en NFS?",
+    options: ["Amazon EFS", "Amazon S3", "Amazon EBS", "Amazon FSx"],
+    answer: 0
+  },
+  {
+    q: "¿Qué característica ofrece Amazon Aurora como motor de base de datos?",
+    options: [
+      "Alta disponibilidad y replicación automática con compatibilidad MySQL/PostgreSQL",
+      "Análisis de Big Data sin necesidad de servidores",
+      "Procesamiento por lotes en Hadoop",
+      "Almacenamiento de documentos NoSQL"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS permite crear copias de seguridad automatizadas de bases de datos relacionales?",
+    options: ["Amazon RDS", "Amazon DynamoDB", "Amazon Redshift", "Amazon Aurora"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de los siguientes servicios puede ser usado para análisis en tiempo real de flujos de datos?",
+    options: ["Amazon Kinesis", "Amazon S3", "Amazon EMR", "Amazon EC2"],
+    answer: 0
+  },
+  {
+    q: "¿Qué tipo de servicio es Amazon SNS dentro de la arquitectura de AWS?",
+    options: [
+      "Servicio de mensajería para publicación/suscripción",
+      "Servicio de almacenamiento",
+      "Servicio de red privada",
+      "Servicio de análisis de datos"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de los siguientes es un caso de uso común de Amazon SQS?",
+    options: [
+      "Desacoplar componentes de una aplicación mediante colas de mensajes",
+      "Transmitir contenido multimedia globalmente",
+      "Alojar bases de datos relacionales",
+      "Ejecutar funciones serverless"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué es Amazon Route 53?",
+    options: [
+      "Un servicio de DNS escalable y altamente disponible",
+      "Una red privada virtual para conectar múltiples regiones",
+      "Una base de datos distribuida",
+      "Una herramienta de despliegue continuo"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué herramienta de AWS ayuda a identificar recomendaciones sobre seguridad, rendimiento y costos?",
+    options: ["AWS Trusted Advisor", "AWS Config", "Amazon CloudWatch", "AWS Budgets"],
+    answer: 0
+  },
+  {
+    q: "¿Qué tipo de almacenamiento utilizarías para datos que se acceden infrecuentemente pero deben mantenerse durante largos periodos?",
+    options: ["Amazon S3 Glacier", "Amazon EBS", "Amazon EFS", "Amazon RDS"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS permite ejecutar tareas programadas o recurrentes como cron jobs en un entorno serverless?",
+    options: ["Amazon EventBridge", "AWS Lambda", "AWS CloudWatch Events", "AWS Step Functions"],
+    answer: 2
+  },
+  {
+    q: "¿Qué es Amazon VPC (Virtual Private Cloud)?",
+    options: [
+      "Un servicio que permite crear una red virtual privada aislada dentro de la nube de AWS",
+      "Un sistema de almacenamiento de objetos a nivel global",
+      "Una herramienta de balanceo de carga automática",
+      "Un servicio de análisis de datos basado en SQL"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué permite hacer Amazon EC2 Auto Scaling?",
+    options: [
+      "Ajustar automáticamente la cantidad de instancias EC2 según la demanda",
+      "Reducir el tiempo de respuesta de aplicaciones en tiempo real",
+      "Transferir datos entre regiones sin costo",
+      "Proteger datos en reposo mediante cifrado por hardware"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS se recomienda para distribuir tráfico entrante entre varias instancias de aplicación?",
+    options: [
+      "Elastic Load Balancing (ELB)",
+      "Amazon CloudFront",
+      "AWS Direct Connect",
+      "Amazon Route 53"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué característica define al modelo de nube pública?",
+    options: [
+      "Infraestructura compartida accesible a través de Internet",
+      "Infraestructura dedicada ubicada en las instalaciones del cliente",
+      "Red privada y cifrada para el acceso exclusivo",
+      "Recursos desplegados en un entorno híbrido controlado"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué característica define a una nube privada?",
+    options: [
+      "Recursos exclusivos para una sola organización",
+      "Acceso libre a través de Internet",
+      "Uso compartido entre múltiples clientes",
+      "Capacidad ilimitada de almacenamiento en caliente"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS se debe utilizar para crear una red segura que conecta recursos locales con la nube usando una conexión privada dedicada?",
+    options: ["AWS Direct Connect", "AWS VPN", "Amazon VPC", "Amazon Route 53"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es el beneficio principal de utilizar Amazon CloudFront?",
+    options: [
+      "Distribuir contenido estático y dinámico a usuarios globalmente con baja latencia",
+      "Almacenar archivos de forma redundante en distintas regiones",
+      "Configurar redes privadas en la nube",
+      "Administrar identidades y permisos"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio permite ejecutar contenedores Docker en AWS sin administrar servidores directamente?",
+    options: ["AWS Fargate", "Amazon ECS (con EC2)", "Amazon EKS", "AWS Lambda"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio proporciona una base de datos completamente administrada para aplicaciones móviles y web que requieren rendimiento en milisegundos?",
+    options: ["Amazon DynamoDB", "Amazon RDS", "Amazon Redshift", "Amazon Aurora"],
+    answer: 0
+  },
+  {
+    q: "¿Qué componente de AWS se utiliza para la autenticación y autorización de usuarios?",
+    options: ["AWS IAM", "AWS Shield", "AWS WAF", "AWS Secrets Manager"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS proporciona defensa automatizada contra ataques DDoS?",
+    options: ["AWS Shield", "AWS IAM", "Amazon VPC", "AWS GuardDuty"],
+    answer: 0
+  },
+  {
+    q: "¿Qué es AWS WAF?",
+    options: [
+      "Un firewall de aplicaciones web para proteger contra amenazas comunes",
+      "Una plataforma de orquestación de contenedores",
+      "Un motor de base de datos no relacional",
+      "Un servicio de archivos de red"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué es Amazon GuardDuty?",
+    options: [
+      "Un servicio que detecta amenazas y comportamientos anómalos en tu cuenta de AWS",
+      "Un sistema de copias de seguridad automáticas",
+      "Un balanceador de carga para EC2",
+      "Una red privada para servicios administrados"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio permite almacenar credenciales y otros secretos de forma segura en AWS?",
+    options: [
+      "AWS Secrets Manager",
+      "AWS IAM",
+      "AWS CloudTrail",
+      "Amazon S3 Glacier"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio permite detectar configuraciones incorrectas o peligrosas en tu entorno AWS?",
+    options: ["AWS Config", "AWS Cost Explorer", "Amazon SNS", "AWS Direct Connect"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál es el propósito principal de Amazon S3 Glacier?",
+    options: [
+      "Almacenamiento de archivos a largo plazo con bajo costo",
+      "Alojamiento de páginas web estáticas",
+      "Distribución global de contenido multimedia",
+      "Procesamiento de datos en contenedores"
+    ],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio permite ejecutar código en respuesta a eventos sin aprovisionar servidores?",
+    options: ["AWS Lambda", "Amazon EC2", "AWS Step Functions", "Amazon ECS"],
+    answer: 0
+  },
+  {
+    q: "¿Cuál de los siguientes servicios permite crear alertas cuando una métrica alcanza un umbral definido?",
+    options: ["Amazon CloudWatch", "AWS Budgets", "AWS Config", "AWS Cost Explorer"],
+    answer: 0
+  },
+  {
+    q: "¿Qué herramienta permite automatizar el aprovisionamiento de recursos de AWS mediante plantillas de infraestructura como código?",
+    options: ["AWS CloudFormation", "AWS CodeDeploy", "AWS Config", "AWS Organizations"],
+    answer: 0
+  },
+  {
+    q: "¿Qué servicio de AWS permite realizar análisis de datos almacenados en S3 utilizando SQL sin necesidad de mover los datos?",
+    options: ["Amazon Athena", "Amazon Redshift", "AWS Glue", "Amazon QuickSight"],
+    answer: 0
+  } 
+];
+
+
+
+    const shuffled = questions.sort(() => 0.5 - Math.random()).slice(0, 10);
+    const quizDiv = document.getElementById("quiz");
+
+    shuffled.forEach((item, i) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "question";
+      const qText = document.createElement("p");
+      qText.textContent = `${i + 1}. ${item.q}`;
+      qDiv.appendChild(qText);
+      item.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.className = "option";
+        btn.onclick = () => {
+          if (btn.dataset.clicked) return;
+          btn.dataset.clicked = true;
+          if (idx === item.answer) {
+            btn.classList.add("correct");
+            btn.textContent += " ✓ Correcto";
+          } else {
+            btn.classList.add("incorrect");
+            btn.textContent += " ✗ Incorrecto";
+          }
+        };
+        qDiv.appendChild(btn);
+      });
+      quizDiv.appendChild(qDiv);
+    });
+  </script>
+</body>
+</html>
